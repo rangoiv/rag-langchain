@@ -1,3 +1,5 @@
+import warnings
+
 from common import (
     create_index_in_not_exist,
     get_documents,
@@ -8,10 +10,10 @@ from common import (
 from envyaml import EnvYAML
 from huggingface_hub.utils import HfHubHTTPError
 from langchain_core.runnables import Runnable
+from prompt_toolkit import PromptSession
 
 
 def invoke(chain: Runnable, query: str) -> str | None:
-    query = "What is RBA?"
     try:
         answer = chain.invoke({"input": query})
         return answer["answer"]
@@ -39,19 +41,28 @@ def create_index_and_chain(env):
 
 
 def main():
-    env = EnvYAML("env.yaml", env_file=".env")
+    env = EnvYAML("env.yaml")
     chain = create_index_and_chain(env)
     print(
         "The bot will answer questions based on MSMarco dataset. Type 'exit' or 'q' to exit."
     )
     print("Try with questions based on MSMarco: What is RBA?")
+    print()
+
+    prompt_session = PromptSession()
     while True:
-        query = input("Question: ")
+        try:
+            query = prompt_session.prompt("Question: ")
+        except (EOFError, KeyboardInterrupt):
+            break  # Handle Ctrl+D or Ctrl+C to exit
         if query in ["exit", "q"]:
-            exit()
-        answer = invoke(chain, query)
+            break
+        with warnings.catch_warnings():
+            warnings.filterwarnings("ignore")
+            answer = invoke(chain, query)
         if answer is not None:
-            print(answer)
+            print("Answer:", answer)
+            print()
 
 
 if __name__ == "__main__":

@@ -1,7 +1,6 @@
 
-from envyaml import EnvYAML
-
 from common import create_index_in_not_exist, get_documents, get_vector_store
+from envyaml import EnvYAML
 
 
 def main():

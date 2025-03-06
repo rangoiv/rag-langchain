@@ -1,12 +1,12 @@
-langchain
-openai
-chromadb
-faiss-cpu
-tiktoken
-transformers
-torch
-pinecone
-datasets
-langchain-community
-sentence-transformers
-langchain-pinecone
+datasets==3.3.2
+envyaml==1.10.211231
+langchain==0.3.20
+langchain-community==0.3.19
+langchain-core==0.3.41
+langchain-huggingface==0.1.2
+langchain-pinecone==0.2.3
+langchain-tests==0.3.13
+langchain-text-splitters==0.3.6
+prompt_toolkit==3.0.50
+--find-links https://download.pytorch.org/whl/cpu
+torch==2.6.0
