@@ -67,7 +67,7 @@ def main():
                 continue
         if answer is not None:
             print("Answer:", answer)
-            print()
+        print()
 
 
 if __name__ == "__main__":
