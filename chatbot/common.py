@@ -1,4 +1,5 @@
 import os
+import sys
 from typing import List
 
 from datasets import load_dataset
@@ -12,6 +13,16 @@ from langchain_huggingface import HuggingFaceEndpoint
 from langchain_pinecone import PineconeEmbeddings, PineconeVectorStore
 from pinecone import Pinecone, ServerlessSpec
 from tqdm import tqdm
+
+
+class HiddenPrints:
+    def __enter__(self):
+        self._original_stdout = sys.stdout
+        sys.stdout = open(os.devnull, "w")
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        sys.stdout.close()
+        sys.stdout = self._original_stdout
 
 
 def get_documents(env) -> list[str]:

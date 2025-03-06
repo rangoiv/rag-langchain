@@ -1,6 +1,7 @@
 import warnings
 
 from common import (
+    HiddenPrints,
     create_index_in_not_exist,
     get_documents,
     get_llm,
@@ -15,7 +16,8 @@ from prompt_toolkit import PromptSession
 
 def invoke(chain: Runnable, query: str) -> str | None:
     try:
-        answer = chain.invoke({"input": query})
+        with HiddenPrints():
+            answer = chain.invoke({"input": query})
         return answer["answer"]
     except HfHubHTTPError as e:
         if 500 <= e.response.status_code < 600:
@@ -59,7 +61,10 @@ def main():
             break
         with warnings.catch_warnings():
             warnings.filterwarnings("ignore")
-            answer = invoke(chain, query)
+            try:
+                answer = invoke(chain, query)
+            except KeyboardInterrupt: # In case the user wants to cancel only the latest prompt
+                continue
         if answer is not None:
             print("Answer:", answer)
             print()
