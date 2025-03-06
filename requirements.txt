@@ -1,0 +1,12 @@
+langchain
+openai
+chromadb
+faiss-cpu
+tiktoken
+transformers
+torch
+pinecone
+datasets
+langchain-community
+sentence-transformers
+langchain-pinecone
